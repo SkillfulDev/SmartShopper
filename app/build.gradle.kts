@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "ua.chernonog.smartshopper"
         minSdk = 24
-        targetSdk = 34
+        this.targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
