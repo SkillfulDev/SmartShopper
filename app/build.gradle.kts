@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.live.data)
     implementation(libs.androidx.view.model)
     implementation(libs.androidx.preference.ktx)
+    implementation(libs.androidx.constraintlayout)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
