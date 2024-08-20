@@ -11,10 +11,9 @@ activity = "1.9.1"
 constraintlayout = "2.1.4"
 roomKtx = "2.6.1"
 roomCompiler = "2.6.1"
-kotlinKapt = "2.0.10"
 liveData = "2.8.4"
 viewModel = "2.8.4"
-preferenceKtx = "1.2.1"
+preference = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,10 +25,11 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
-androidx-room-compiler = {group = "androidx.room", name = "room-compiler",version = "roomCompiler"}
-androidx-live-data = {group = "androidx.lifecycle", name = "lifecycle-livedata-ktx",version = "liveData"}
-androidx-view-model = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx",version = "viewModel"}
-androidx-preference-ktx = {group = "androidx.preference", name = "preference-ktx",version = "preferenceKtx"}
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+androidx-live-data = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "liveData" }
+androidx-view-model = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModel" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
