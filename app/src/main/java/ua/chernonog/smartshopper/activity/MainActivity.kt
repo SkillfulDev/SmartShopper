@@ -1,7 +1,8 @@
-package ua.chernonog.smartshopper
+package ua.chernonog.smartshopper.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ua.chernonog.smartshopper.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
