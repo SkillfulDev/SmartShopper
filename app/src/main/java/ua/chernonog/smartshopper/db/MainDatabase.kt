@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import ua.chernonog.smartshopper.entity.Item
 import ua.chernonog.smartshopper.entity.LibraryItem
-import ua.chernonog.smartshopper.entity.Notebook
+import ua.chernonog.smartshopper.entity.NoteItem
 import ua.chernonog.smartshopper.entity.ShoppingList
 
 @Database(
     entities = [
         Item::class,
         LibraryItem::class,
-        Notebook::class,
+        NoteItem::class,
         ShoppingList::class
     ], version = 1
 )
