@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 
 object FragmentManager {
-    var currentFragment: BaseFragment? = null
+    private var currentFragment: BaseFragment? = null
 
     fun setFragment(newFragment: BaseFragment, activity: AppCompatActivity) {
         val fragmentManager = activity.supportFragmentManager
