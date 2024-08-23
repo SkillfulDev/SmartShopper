@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import ua.chernonog.smartshopper.databinding.FragmentNoteBinding
 
 class NoteFragment : BaseFragment() {
@@ -23,6 +22,6 @@ class NoteFragment : BaseFragment() {
     }
 
     override fun onClickNew() {
-       TODO()
+        TODO()
     }
 }
