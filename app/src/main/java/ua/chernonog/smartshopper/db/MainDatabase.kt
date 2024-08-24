@@ -18,6 +18,8 @@ import ua.chernonog.smartshopper.entity.ShoppingList
     ], version = 1
 )
 abstract class MainDatabase : RoomDatabase() {
+    abstract fun getDao(): Dao
+
     companion object {
         @Volatile
         private var INSTANCE: MainDatabase? = null
