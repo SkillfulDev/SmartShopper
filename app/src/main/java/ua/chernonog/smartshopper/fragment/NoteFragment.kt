@@ -4,10 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import ua.chernonog.smartshopper.activity.MainApp
 import ua.chernonog.smartshopper.databinding.FragmentNoteBinding
+import ua.chernonog.smartshopper.viewmodel.MainViewModel
 
 class NoteFragment : BaseFragment() {
+    private val mainViewModel: MainViewModel by activityViewModels {
+        MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
+    }
     private lateinit var binding: FragmentNoteBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,6 +29,5 @@ class NoteFragment : BaseFragment() {
     }
 
     override fun onClickNew() {
-        TODO()
     }
 }
