@@ -10,7 +10,7 @@ import ua.chernonog.smartshopper.entity.NoteItem
 
 class MainViewModel(database: MainDatabase) : ViewModel() {
     private val dao = database.getDao()
-    private val allNotes = dao.getAllNoteItems().asLiveData()
+    val allNotes = dao.getAllNoteItems().asLiveData()
 
     fun insertNote(noteItem: NoteItem) = viewModelScope.launch {
         dao.addNoteItem(noteItem)
