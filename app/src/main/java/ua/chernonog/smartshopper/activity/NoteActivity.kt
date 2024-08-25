@@ -8,10 +8,15 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
+import ua.chernonog.smartshopper.entity.NoteItem
 import ua.chernonog.smartshopper.fragment.NoteFragment
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class NoteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteBinding.inflate(layoutInflater)
@@ -40,10 +45,23 @@ class NoteActivity : AppCompatActivity() {
 
     private fun setResultForActivity() {
         val intent = Intent()
-        intent.putExtra(NoteFragment.TITLE_KEY, binding.edTitle.text.toString())
-        intent.putExtra(NoteFragment.CONTENT_KEY, binding.edContent.text.toString())
-
+        intent.putExtra(NoteFragment.NEW_NOTE_KEY, getNewNoteItem())
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    private fun getNewNoteItem(): NoteItem = with(binding) {
+        return NoteItem(
+            null,
+            edTitle.text.toString(),
+            edContent.text.toString(),
+            getCurrentTime(),
+            ""
+        )
+    }
+
+    private fun getCurrentTime(): String {
+        val formatter = SimpleDateFormat("hh:mm - yyyy/MM/dd", Locale.getDefault())
+        return formatter.format(Calendar.getInstance().time)
     }
 }
