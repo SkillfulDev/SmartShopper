@@ -15,6 +15,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         onBottomNavigationListener()
+        settingToolBar()
+    }
+
+    private fun settingToolBar() {
+        val noteToolBar = binding.tbMain
+        setSupportActionBar(noteToolBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun onBottomNavigationListener() {
@@ -23,7 +30,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.settings -> Log.d("MyLog", "Settings")
                 R.id.notes -> FragmentManager.setFragment(NoteFragment.newInstance(), this)
                 R.id.shopList -> Log.d("MyLog", "Shop List")
-                R.id.item -> Log.d("MyLog", "Item")
+                R.id.add -> {
+                    FragmentManager.currentFragment?.onClickAdd()
+                }
             }
             true
         }
