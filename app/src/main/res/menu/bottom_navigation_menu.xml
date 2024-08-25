@@ -17,7 +17,7 @@
         android:title="@string/shop_list"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/item"
+        android:id="@+id/add"
         android:icon="@drawable/ic_item"
         android:title="@string/item"
         app:showAsAction="ifRoom" />

@@ -1,11 +1,13 @@
 package ua.chernonog.smartshopper.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import ua.chernonog.smartshopper.activity.MainApp
+import ua.chernonog.smartshopper.activity.NoteActivity
 import ua.chernonog.smartshopper.databinding.FragmentNoteBinding
 import ua.chernonog.smartshopper.viewmodel.MainViewModel
 
@@ -28,6 +30,8 @@ class NoteFragment : BaseFragment() {
         fun newInstance() = NoteFragment()
     }
 
-    override fun onClickNew() {
+    override fun onClickAdd() {
+        startActivity(Intent(activity, NoteActivity::class.java))
+
     }
 }
