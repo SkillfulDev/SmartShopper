@@ -54,7 +54,7 @@ class NoteActivity : AppCompatActivity() {
             endPosition,
             StyleSpan::class.java
         )
-        val boldStyle: StyleSpan = StyleSpan(Typeface.BOLD)
+        val boldStyle = StyleSpan(Typeface.BOLD)
 
         if (existingStyles.isNotEmpty()) {
             edContent.text.removeSpan(existingStyles[0])
