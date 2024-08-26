@@ -18,7 +18,7 @@ import ua.chernonog.smartshopper.entity.NoteItem
 import ua.chernonog.smartshopper.util.NoteItemAdapter
 import ua.chernonog.smartshopper.viewmodel.MainViewModel
 
-class NoteFragment : BaseFragment() {
+class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
     companion object {
         const val NEW_NOTE_KEY = "note"
 
@@ -29,10 +29,14 @@ class NoteFragment : BaseFragment() {
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
-    private lateinit var binding: FragmentNoteBinding
 
+    private lateinit var binding: FragmentNoteBinding
     private lateinit var noteActivityLauncher: ActivityResultLauncher<Intent>
     private lateinit var adapter: NoteItemAdapter
+
+    override fun deleteNoteItem(id: Int) {
+        mainViewModel.deleteNote(id)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,12 +66,13 @@ class NoteFragment : BaseFragment() {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val noteItem: NoteItem? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.data?.getSerializableExtra(NEW_NOTE_KEY, NoteItem::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    it.data?.getSerializableExtra(NEW_NOTE_KEY) as? NoteItem
-                }
+                val noteItem: NoteItem? =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.data?.getSerializableExtra(NEW_NOTE_KEY, NoteItem::class.java)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        it.data?.getSerializableExtra(NEW_NOTE_KEY) as? NoteItem
+                    }
                 mainViewModel.insertNote(noteItem!!)
             }
         }
@@ -75,7 +80,7 @@ class NoteFragment : BaseFragment() {
 
     private fun initNoteAdapter() = with(binding) {
         rvNote.layoutManager = LinearLayoutManager(activity)
-        adapter = NoteItemAdapter()
+        adapter = NoteItemAdapter(this@NoteFragment)
         rvNote.adapter = adapter
     }
 
