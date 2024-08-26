@@ -2,8 +2,11 @@ package ua.chernonog.smartshopper.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.Spanned
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -36,9 +39,34 @@ class NoteActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
+            R.id.makeBold -> makeTextBold()
             R.id.saveNote -> setResultForActivity()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun makeTextBold() = with(binding) {
+        val startPosition = edContent.selectionStart
+        val endPosition = edContent.selectionEnd
+
+        val existingStyles = edContent.text.getSpans(
+            startPosition,
+            endPosition,
+            StyleSpan::class.java
+        )
+        val boldStyle: StyleSpan = StyleSpan(Typeface.BOLD)
+
+        if (existingStyles.isNotEmpty()) {
+            edContent.text.removeSpan(existingStyles[0])
+        } else {
+            edContent.text.setSpan(
+                boldStyle,
+                startPosition,
+                endPosition,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            edContent.setSelection(startPosition)
+        }
     }
 
     private fun getNoteItem() {
