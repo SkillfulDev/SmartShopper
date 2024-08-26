@@ -65,6 +65,7 @@ class NoteActivity : AppCompatActivity() {
                 endPosition,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
+            edContent.setSelection(startPosition)
         }
     }
 
