@@ -31,6 +31,9 @@ class NoteItemAdapter(private val listener: Listener) :
             tvTitle.text = item.title
             tvContent.text = item.content
             tvTime.text = item.time
+            itemView.setOnClickListener {
+                listener.updateNoteItem(item)
+            }
             imgDeleteNote.setOnClickListener {
                 listener.deleteNoteItem(item.id!!)
             }
@@ -49,5 +52,6 @@ class NoteItemAdapter(private val listener: Listener) :
 
     interface Listener {
         fun deleteNoteItem(id: Int)
+        fun updateNoteItem(noteItem: NoteItem)
     }
 }

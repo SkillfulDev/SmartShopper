@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -21,6 +23,7 @@ import ua.chernonog.smartshopper.viewmodel.MainViewModel
 class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
     companion object {
         const val NEW_NOTE_KEY = "note"
+        const val EXISTING_NOTE_KEY = "exist"
 
         @JvmStatic
         fun newInstance() = NoteFragment()
@@ -36,6 +39,12 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
 
     override fun deleteNoteItem(id: Int) {
         mainViewModel.deleteNote(id)
+    }
+
+    override fun updateNoteItem(noteItem: NoteItem) {
+        val intent = Intent(activity, NoteActivity::class.java)
+        intent.putExtra(EXISTING_NOTE_KEY, noteItem)
+        noteActivityLauncher.launch(intent)
     }
 
     override fun onCreateView(
@@ -66,14 +75,11 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val noteItem: NoteItem? =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        it.data?.getSerializableExtra(NEW_NOTE_KEY, NoteItem::class.java)
-                    } else {
-                        @Suppress("DEPRECATION")
-                        it.data?.getSerializableExtra(NEW_NOTE_KEY) as? NoteItem
-                    }
-                mainViewModel.insertNote(noteItem!!)
+                if (it.data?.hasExtra(NEW_NOTE_KEY) == true) {
+                    mainViewModel.insertNote(getNoteItemType(it, NEW_NOTE_KEY))
+                } else {
+                    mainViewModel.updateNote(getNoteItemType(it, EXISTING_NOTE_KEY))
+                }
             }
         }
     }
@@ -88,5 +94,14 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
         mainViewModel.allNotes.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+    }
+
+    private fun getNoteItemType(result: ActivityResult, type: String): NoteItem {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            result.data?.getSerializableExtra(type, NoteItem::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            result.data?.getSerializableExtra(type) as? NoteItem
+        }!!
     }
 }

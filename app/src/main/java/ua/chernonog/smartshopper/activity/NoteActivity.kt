@@ -2,7 +2,9 @@ package ua.chernonog.smartshopper.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +17,13 @@ import java.util.Calendar
 import java.util.Locale
 
 class NoteActivity : AppCompatActivity() {
+    private var noteItem: NoteItem? = null
     private lateinit var binding: ActivityNoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteBinding.inflate(layoutInflater)
+        getNoteItem()
         setContentView(binding.root)
         settingToolBar()
     }
@@ -37,6 +41,26 @@ class NoteActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun getNoteItem() {
+        val result =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra(NoteFragment.EXISTING_NOTE_KEY, NoteItem::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getSerializableExtra(NoteFragment.EXISTING_NOTE_KEY)
+            }
+        if (result != null) {
+            noteItem = result as NoteItem
+            Log.d("MyLog", "${noteItem?.id}")
+            fillNoteItemActivity(noteItem!!)
+        }
+    }
+
+    private fun fillNoteItemActivity(noteItem: NoteItem) = with(binding) {
+        edTitle.setText(noteItem.title)
+        edContent.setText(noteItem.content)
+    }
+
     private fun settingToolBar() {
         val noteToolBar = binding.tbNote
         setSupportActionBar(noteToolBar)
@@ -45,9 +69,21 @@ class NoteActivity : AppCompatActivity() {
 
     private fun setResultForActivity() {
         val intent = Intent()
-        intent.putExtra(NoteFragment.NEW_NOTE_KEY, getNewNoteItem())
+        if (noteItem != null) {
+            intent.putExtra(NoteFragment.EXISTING_NOTE_KEY, updateNoteItem())
+        } else {
+            intent.putExtra(NoteFragment.NEW_NOTE_KEY, getNewNoteItem())
+        }
         setResult(Activity.RESULT_OK, intent)
         finish()
+    }
+
+    private fun updateNoteItem(): NoteItem = with(binding) {
+        return noteItem?.copy(
+            title = edTitle.text.toString(),
+            content = edContent.text.toString(),
+            time = getCurrentTime()
+        )!!
     }
 
     private fun getNewNoteItem(): NoteItem = with(binding) {
