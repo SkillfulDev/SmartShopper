@@ -29,7 +29,7 @@ class NoteItemAdapter(private val listener: Listener) :
 
         fun setData(item: NoteItem, listener: Listener) = with(binding) {
             tvTitle.text = item.title
-            tvContent.text = item.content
+            tvContent.text = HtmlManager.convertHtmlStringToSpanned(item.content).trim()
             tvTime.text = item.time
             itemView.setOnClickListener {
                 listener.updateNoteItem(item)

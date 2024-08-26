@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Spanned
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +14,7 @@ import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
 import ua.chernonog.smartshopper.entity.NoteItem
 import ua.chernonog.smartshopper.fragment.NoteFragment
+import ua.chernonog.smartshopper.util.HtmlManager
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -54,7 +54,7 @@ class NoteActivity : AppCompatActivity() {
             endPosition,
             StyleSpan::class.java
         )
-        val boldStyle: StyleSpan = StyleSpan(Typeface.BOLD)
+        val boldStyle = StyleSpan(Typeface.BOLD)
 
         if (existingStyles.isNotEmpty()) {
             edContent.text.removeSpan(existingStyles[0])
@@ -79,14 +79,13 @@ class NoteActivity : AppCompatActivity() {
             }
         if (result != null) {
             noteItem = result as NoteItem
-            Log.d("MyLog", "${noteItem?.id}")
             fillNoteItemActivity(noteItem!!)
         }
     }
 
     private fun fillNoteItemActivity(noteItem: NoteItem) = with(binding) {
         edTitle.setText(noteItem.title)
-        edContent.setText(noteItem.content)
+        edContent.setText(HtmlManager.convertHtmlStringToSpanned(noteItem.content))
     }
 
     private fun settingToolBar() {
@@ -109,7 +108,7 @@ class NoteActivity : AppCompatActivity() {
     private fun updateNoteItem(): NoteItem = with(binding) {
         return noteItem?.copy(
             title = edTitle.text.toString(),
-            content = edContent.text.toString(),
+            content = HtmlManager.convertSpannedToHtmlString(edContent.text).trim(),
             time = getCurrentTime()
         )!!
     }
@@ -118,7 +117,7 @@ class NoteActivity : AppCompatActivity() {
         return NoteItem(
             null,
             edTitle.text.toString(),
-            edContent.text.toString(),
+            HtmlManager.convertSpannedToHtmlString(edContent.text).trim(),
             getCurrentTime(),
             ""
         )
