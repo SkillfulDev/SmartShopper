@@ -10,7 +10,7 @@ import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.NoteItemListBinding
 import ua.chernonog.smartshopper.entity.NoteItem
 
-class NoteItemAdapter :
+class NoteItemAdapter(private val listener: Listener) :
     ListAdapter<NoteItem, NoteItemAdapter.NoteItemViewHolder>(NoteItemDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteItemViewHolder {
@@ -21,16 +21,19 @@ class NoteItemAdapter :
     }
 
     override fun onBindViewHolder(holder: NoteItemViewHolder, position: Int) {
-        holder.setData(getItem(position))
+        holder.setData(getItem(position), listener)
     }
 
     class NoteItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = NoteItemListBinding.bind(itemView)
 
-        fun setData(item: NoteItem) = with(binding) {
+        fun setData(item: NoteItem, listener: Listener) = with(binding) {
             tvTitle.text = item.title
             tvContent.text = item.content
             tvTime.text = item.time
+            imgDeleteNote.setOnClickListener {
+                listener.deleteNoteItem(item.id!!)
+            }
         }
     }
 
@@ -42,5 +45,9 @@ class NoteItemAdapter :
         override fun areContentsTheSame(oldItem: NoteItem, newItem: NoteItem): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface Listener {
+        fun deleteNoteItem(id: Int)
     }
 }
