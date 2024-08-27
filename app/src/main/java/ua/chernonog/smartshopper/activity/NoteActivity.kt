@@ -9,6 +9,9 @@ import android.text.Spanned
 import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
@@ -41,8 +44,42 @@ class NoteActivity : AppCompatActivity() {
             android.R.id.home -> finish()
             R.id.makeBold -> makeTextBold()
             R.id.saveNote -> setResultForActivity()
+            R.id.changeColor ->
+                if (binding.clColorPicker.isShown) {
+                    closeColorPicker()
+                } else {
+                    openColorPicker()
+                }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun openColorPicker() {
+        binding.clColorPicker.visibility = View.VISIBLE
+        val openAnimation = AnimationUtils.loadAnimation(
+            this,
+            R.anim.open_color_picker
+        )
+        binding.clColorPicker.startAnimation(openAnimation)
+    }
+
+    private fun closeColorPicker() {
+        val closeAnimation = AnimationUtils.loadAnimation(
+            this,
+            R.anim.close_color_picker
+        )
+        closeAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.clColorPicker.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+        })
+        binding.clColorPicker.startAnimation(closeAnimation)
     }
 
     private fun makeTextBold() = with(binding) {
