@@ -5,14 +5,19 @@
     <item
         android:id="@+id/saveNote"
         android:icon="@drawable/ic_save"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/save"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/makeBold"
         android:icon="@drawable/ic_bold_style"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/bold_style"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/changeColor"
+        android:icon="@drawable/ic_color_picker"
+        android:orderInCategory="1"
+        android:title="@string/change_color"
+        app:showAsAction="ifRoom" />
 </menu>
