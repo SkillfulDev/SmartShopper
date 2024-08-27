@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--    Picker color-->
+    <color name="picker_black">#FF000000</color>
+    <color name="picker_red">#970C0C</color>
+    <color name="picker_green">#24C52B</color>
+    <color name="picker_blue">#2196F3</color>
+    <color name="picker_yellow">#BFB029</color>
+    <color name="picker_orange">#FF5722</color>
 </resources>

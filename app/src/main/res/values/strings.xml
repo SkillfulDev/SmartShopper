@@ -16,6 +16,11 @@
     <string name="save">Save</string>
     <string name="bold_style">Make Bold</string>
     <string name="delete_image_description">Delete the note</string>
-
-
+    <!-- Picker Color content -->
+    <string name="img_back">Black color</string>
+    <string name="img_blue">Blue color</string>
+    <string name="img_green">Green color</string>
+    <string name="img_yellow">Yellow color</string>
+    <string name="img_red">Red color</string>
+    <string name="img_orange">Orange color</string>
 </resources>
