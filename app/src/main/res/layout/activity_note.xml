@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="#544C57"
     android:scrollbarSize="4dp"
+    android:visibility="visible"
     tools:context=".activity.NoteActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -43,6 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:autofillHints="text"
                 android:ems="10"
                 android:hint="@string/title_hint"
                 android:inputType="text"
@@ -50,7 +52,6 @@
                 android:paddingEnd="10dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:autofillHints="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -60,13 +61,13 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
+                android:autofillHints="text"
                 android:ems="10"
                 android:gravity="top"
                 android:hint="@string/content_hint"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:autofillHints="text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="300dp"
+        android:background="#fff3edf7"
         android:elevation="10dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
