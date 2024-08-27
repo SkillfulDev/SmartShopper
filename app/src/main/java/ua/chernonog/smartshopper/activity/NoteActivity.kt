@@ -1,5 +1,6 @@
 package ua.chernonog.smartshopper.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
@@ -17,6 +18,7 @@ import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
 import ua.chernonog.smartshopper.entity.NoteItem
 import ua.chernonog.smartshopper.fragment.NoteFragment
+import ua.chernonog.smartshopper.util.ColorPickerTouchListener
 import ua.chernonog.smartshopper.util.HtmlManager
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -32,6 +34,7 @@ class NoteActivity : AppCompatActivity() {
         getNoteItem()
         setContentView(binding.root)
         settingToolBar()
+        setUpColorPickerTouchListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,6 +55,11 @@ class NoteActivity : AppCompatActivity() {
                 }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setUpColorPickerTouchListener(){
+        binding.clColorPicker.setOnTouchListener(ColorPickerTouchListener())
     }
 
     private fun openColorPicker() {
