@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
 import ua.chernonog.smartshopper.entity.NoteItem
@@ -35,6 +37,7 @@ class NoteActivity : AppCompatActivity() {
         setContentView(binding.root)
         settingToolBar()
         setUpColorPickerTouchListener()
+        onClickColorPicker()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -57,8 +60,17 @@ class NoteActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun onClickColorPicker() = with(binding) {
+        imgBlue.setOnClickListener { makeTextColored(R.color.picker_blue) }
+        imgRed.setOnClickListener { makeTextColored(R.color.picker_red) }
+        imgBlack.setOnClickListener { makeTextColored(R.color.picker_black) }
+        imgYellow.setOnClickListener { makeTextColored(R.color.picker_yellow) }
+        imgOrange.setOnClickListener { makeTextColored(R.color.picker_orange) }
+        imgGreen.setOnClickListener { makeTextColored(R.color.picker_green) }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    private fun setUpColorPickerTouchListener(){
+    private fun setUpColorPickerTouchListener() {
         binding.clColorPicker.setOnTouchListener(ColorPickerTouchListener())
     }
 
@@ -112,6 +124,30 @@ class NoteActivity : AppCompatActivity() {
             )
             edContent.setSelection(startPosition)
         }
+    }
+
+    private fun makeTextColored(colorId: Int) = with(binding) {
+        val startPosition = edContent.selectionStart
+        val endPosition = edContent.selectionEnd
+
+        val existingStyles = edContent.text.getSpans(
+            startPosition,
+            endPosition,
+            ForegroundColorSpan::class.java
+        )
+        if (existingStyles.isNotEmpty()) {
+            edContent.text.removeSpan(existingStyles[0])
+        }
+        edContent.text.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(this@NoteActivity, colorId)
+            ),
+            startPosition,
+            endPosition,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        edContent.setSelection(startPosition)
+
     }
 
     private fun getNoteItem() {
