@@ -17,7 +17,7 @@ object ShoppingListDialog {
             btnSetListName.setOnClickListener {
                 val listName = edListName.text.toString()
                 if (listName.isNotEmpty()) {
-                    listener.addShoppingList()
+                    listener.addShoppingList(listName)
                 }
                 dialog.dismiss()
             }
@@ -26,6 +26,6 @@ object ShoppingListDialog {
     }
 
     interface Listener {
-        fun addShoppingList()
+        fun addShoppingList(name: String)
     }
 }
