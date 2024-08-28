@@ -24,4 +24,8 @@
     <string name="img_yellow">Yellow color</string>
     <string name="img_red">Red color</string>
     <string name="img_orange">Orange color</string>
+    <!-- Shopping List -->
+    <string name="shopping_list_name">Please write list name</string>
+    <string name="hit_list_name">List name</string>
+    <string name="add_list_button">Add</string>
 </resources>
