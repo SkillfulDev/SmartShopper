@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.fragment
+package ua.chernonog.smartshopper.ui.fragment
 
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R

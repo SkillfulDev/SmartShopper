@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.dialog
+package ua.chernonog.smartshopper.ui.dialog
 
 import android.content.Context
 import android.view.LayoutInflater

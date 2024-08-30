@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.util
+package ua.chernonog.smartshopper.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ua.chernonog.smartshopper.R
+import ua.chernonog.smartshopper.data.entity.NoteItem
 import ua.chernonog.smartshopper.databinding.NoteItemListBinding
-import ua.chernonog.smartshopper.entity.NoteItem
+import ua.chernonog.smartshopper.util.data.utils.HtmlManager
 
 class NoteItemAdapter(private val listener: Listener) :
     ListAdapter<NoteItem, NoteItemAdapter.NoteItemViewHolder>(NoteItemDiffCallBack()) {

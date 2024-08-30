@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.util
+package ua.chernonog.smartshopper.util.ui.utils
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent

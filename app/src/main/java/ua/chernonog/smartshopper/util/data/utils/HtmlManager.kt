@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.util
+package ua.chernonog.smartshopper.util.data.utils
 
 import android.text.Html
 import android.text.Spanned

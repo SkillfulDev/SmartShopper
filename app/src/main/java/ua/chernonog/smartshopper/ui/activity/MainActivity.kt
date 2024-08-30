@@ -1,13 +1,13 @@
-package ua.chernonog.smartshopper.activity
+package ua.chernonog.smartshopper.ui.activity
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityMainBinding
-import ua.chernonog.smartshopper.fragment.FragmentManager
-import ua.chernonog.smartshopper.fragment.NoteFragment
-import ua.chernonog.smartshopper.fragment.ShoppingListFragment
+import ua.chernonog.smartshopper.ui.fragment.FragmentManager
+import ua.chernonog.smartshopper.ui.fragment.NoteItemFragment
+import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStartingFragment() {
-        FragmentManager.setFragment(NoteFragment.newInstance(), this)
+        FragmentManager.setFragment(NoteItemFragment.newInstance(), this)
     }
 
     private fun settingToolBar() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding.bnvMain.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.settings -> Log.d("MyLog", "Settings")
-                R.id.notes -> FragmentManager.setFragment(NoteFragment.newInstance(), this)
+                R.id.notes -> FragmentManager.setFragment(NoteItemFragment.newInstance(), this)
                 R.id.shopList -> FragmentManager.setFragment(
                     ShoppingListFragment.newInstance(),
                     this

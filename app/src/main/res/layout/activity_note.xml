@@ -8,7 +8,7 @@
     android:background="#544C57"
     android:scrollbarSize="4dp"
     android:visibility="visible"
-    tools:context=".activity.NoteActivity">
+    tools:context=".ui.activity.NoteActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tbNote"
