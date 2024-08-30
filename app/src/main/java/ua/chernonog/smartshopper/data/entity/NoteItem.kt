@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.entity
+package ua.chernonog.smartshopper.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

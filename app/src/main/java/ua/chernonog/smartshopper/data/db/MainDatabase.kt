@@ -1,13 +1,13 @@
-package ua.chernonog.smartshopper.db
+package ua.chernonog.smartshopper.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ua.chernonog.smartshopper.entity.Item
-import ua.chernonog.smartshopper.entity.LibraryItem
-import ua.chernonog.smartshopper.entity.NoteItem
-import ua.chernonog.smartshopper.entity.ShoppingList
+import ua.chernonog.smartshopper.data.entity.Item
+import ua.chernonog.smartshopper.data.entity.LibraryItem
+import ua.chernonog.smartshopper.data.entity.NoteItem
+import ua.chernonog.smartshopper.data.entity.ShoppingList
 
 @Database(
     entities = [
@@ -18,11 +18,14 @@ import ua.chernonog.smartshopper.entity.ShoppingList
     ], version = 1
 )
 abstract class MainDatabase : RoomDatabase() {
-    abstract fun getDao(): Dao
+
+    abstract fun getNoteItemDao(): NoteItemDao
+    abstract fun getShoppingListDao(): ShoppingListDao
 
     companion object {
         @Volatile
         private var INSTANCE: MainDatabase? = null
+
         fun getDbInstance(context: Context): MainDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance =
@@ -31,7 +34,8 @@ abstract class MainDatabase : RoomDatabase() {
                         MainDatabase::class.java,
                         "shopping_list.db"
                     ).build()
-                return instance
+                INSTANCE = instance
+                instance
             }
         }
     }

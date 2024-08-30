@@ -1,4 +1,4 @@
-package ua.chernonog.smartshopper.activity
+package ua.chernonog.smartshopper.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -17,14 +17,12 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ua.chernonog.smartshopper.R
+import ua.chernonog.smartshopper.data.entity.NoteItem
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
-import ua.chernonog.smartshopper.entity.NoteItem
-import ua.chernonog.smartshopper.fragment.NoteFragment
-import ua.chernonog.smartshopper.util.ColorPickerTouchListener
-import ua.chernonog.smartshopper.util.HtmlManager
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import ua.chernonog.smartshopper.ui.fragment.NoteItemFragment
+import ua.chernonog.smartshopper.util.DataTimeUtil
+import ua.chernonog.smartshopper.util.data.utils.HtmlManager
+import ua.chernonog.smartshopper.util.ui.utils.ColorPickerTouchListener
 
 class NoteActivity : AppCompatActivity() {
     private var noteItem: NoteItem? = null
@@ -153,10 +151,13 @@ class NoteActivity : AppCompatActivity() {
     private fun getNoteItem() {
         val result =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra(NoteFragment.EXISTING_NOTE_KEY, NoteItem::class.java)
+                intent.getSerializableExtra(
+                    NoteItemFragment.EXISTING_NOTE_KEY,
+                    NoteItem::class.java
+                )
             } else {
                 @Suppress("DEPRECATION")
-                intent.getSerializableExtra(NoteFragment.EXISTING_NOTE_KEY)
+                intent.getSerializableExtra(NoteItemFragment.EXISTING_NOTE_KEY)
             }
         if (result != null) {
             noteItem = result as NoteItem
@@ -178,9 +179,9 @@ class NoteActivity : AppCompatActivity() {
     private fun setResultForActivity() {
         val intent = Intent()
         if (noteItem != null) {
-            intent.putExtra(NoteFragment.EXISTING_NOTE_KEY, updateNoteItem())
+            intent.putExtra(NoteItemFragment.EXISTING_NOTE_KEY, updateNoteItem())
         } else {
-            intent.putExtra(NoteFragment.NEW_NOTE_KEY, getNewNoteItem())
+            intent.putExtra(NoteItemFragment.NEW_NOTE_KEY, getNewNoteItem())
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
@@ -190,7 +191,7 @@ class NoteActivity : AppCompatActivity() {
         return noteItem?.copy(
             title = edTitle.text.toString(),
             content = HtmlManager.convertSpannedToHtmlString(edContent.text).trim(),
-            time = getCurrentTime()
+            time = DataTimeUtil.getCurrentTime()
         )!!
     }
 
@@ -199,13 +200,8 @@ class NoteActivity : AppCompatActivity() {
             null,
             edTitle.text.toString(),
             HtmlManager.convertSpannedToHtmlString(edContent.text).trim(),
-            getCurrentTime(),
+            DataTimeUtil.getCurrentTime(),
             ""
         )
-    }
-
-    private fun getCurrentTime(): String {
-        val formatter = SimpleDateFormat("hh:mm - yyyy/MM/dd", Locale.getDefault())
-        return formatter.format(Calendar.getInstance().time)
     }
 }

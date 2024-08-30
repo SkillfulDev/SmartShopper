@@ -1,10 +1,9 @@
-package ua.chernonog.smartshopper.fragment
+package ua.chernonog.smartshopper.ui.fragment
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,24 +12,24 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import ua.chernonog.smartshopper.activity.MainApp
-import ua.chernonog.smartshopper.activity.NoteActivity
+import ua.chernonog.smartshopper.data.entity.NoteItem
 import ua.chernonog.smartshopper.databinding.FragmentNoteBinding
-import ua.chernonog.smartshopper.entity.NoteItem
-import ua.chernonog.smartshopper.util.NoteItemAdapter
-import ua.chernonog.smartshopper.viewmodel.MainViewModel
+import ua.chernonog.smartshopper.ui.activity.MainApp
+import ua.chernonog.smartshopper.ui.activity.NoteActivity
+import ua.chernonog.smartshopper.ui.adapter.NoteItemAdapter
+import ua.chernonog.smartshopper.viewmodel.NoteItemViewModel
 
-class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
+class NoteItemFragment : BaseFragment(), NoteItemAdapter.Listener {
     companion object {
         const val NEW_NOTE_KEY = "note"
         const val EXISTING_NOTE_KEY = "exist"
 
         @JvmStatic
-        fun newInstance() = NoteFragment()
+        fun newInstance() = NoteItemFragment()
     }
 
-    private val mainViewModel: MainViewModel by activityViewModels {
-        MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
+    private val noteItemViewModel: NoteItemViewModel by activityViewModels {
+        NoteItemViewModel.NoteItemViewModelFactory((context?.applicationContext as MainApp).database)
     }
 
     private lateinit var binding: FragmentNoteBinding
@@ -38,7 +37,7 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
     private lateinit var adapter: NoteItemAdapter
 
     override fun deleteNoteItem(id: Int) {
-        mainViewModel.deleteNote(id)
+        noteItemViewModel.deleteNote(id)
     }
 
     override fun updateNoteItem(noteItem: NoteItem) {
@@ -76,9 +75,9 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
                 if (it.data?.hasExtra(NEW_NOTE_KEY) == true) {
-                    mainViewModel.insertNote(getNoteItemType(it, NEW_NOTE_KEY))
+                    noteItemViewModel.insertNote(getNoteItemType(it, NEW_NOTE_KEY))
                 } else {
-                    mainViewModel.updateNote(getNoteItemType(it, EXISTING_NOTE_KEY))
+                    noteItemViewModel.updateNote(getNoteItemType(it, EXISTING_NOTE_KEY))
                 }
             }
         }
@@ -86,12 +85,12 @@ class NoteFragment : BaseFragment(), NoteItemAdapter.Listener {
 
     private fun initNoteAdapter() = with(binding) {
         rvNote.layoutManager = LinearLayoutManager(activity)
-        adapter = NoteItemAdapter(this@NoteFragment)
+        adapter = NoteItemAdapter(this@NoteItemFragment)
         rvNote.adapter = adapter
     }
 
     private fun dataObserver() {
-        mainViewModel.allNotes.observe(viewLifecycleOwner) {
+        noteItemViewModel.allNotes.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
     }

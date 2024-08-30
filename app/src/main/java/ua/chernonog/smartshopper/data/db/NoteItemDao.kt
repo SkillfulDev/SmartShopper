@@ -1,14 +1,14 @@
-package ua.chernonog.smartshopper.db
+package ua.chernonog.smartshopper.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import ua.chernonog.smartshopper.entity.NoteItem
+import ua.chernonog.smartshopper.data.entity.NoteItem
 
 @Dao
-interface Dao {
+interface NoteItemDao {
     @Query("SELECT * FROM note_item")
     fun getAllNoteItems(): Flow<List<NoteItem>>
 
