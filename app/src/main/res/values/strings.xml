@@ -28,4 +28,7 @@
     <string name="shopping_list_name">Please write list name</string>
     <string name="hit_list_name">List name</string>
     <string name="add_list_button">Add</string>
+    <string name="delete_shopping_list">Delete shopping list</string>
+    <string name="edit_shopping_list">Edit shopping list</string>
+
 </resources>
