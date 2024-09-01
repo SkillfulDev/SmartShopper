@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#CCCCCC">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -20,6 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -48,22 +51,22 @@
         android:id="@+id/ibDeleteShoppingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/delete_shopping_list"
         android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintTop_toTopOf="@+id/cardView2"
-        android:contentDescription="@string/delete_shopping_list"
         app:srcCompat="@drawable/ic_delete_note" />
 
     <ImageButton
         android:id="@+id/ibEditShoppingList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/edit_shopping_list"
         android:elevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
         app:layout_constraintEnd_toStartOf="@+id/ibDeleteShoppingList"
         app:layout_constraintTop_toTopOf="@+id/cardView2"
-        android:contentDescription="@string/edit_shopping_list"
         app:srcCompat="@drawable/ic_edit_shopping_list" />
 
     <TextView
