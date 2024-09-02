@@ -38,6 +38,9 @@ class ShoppingListAdapter(private val listener: Listener) :
                 ibEditShoppingList.setOnClickListener {
                     listener.editShoppingList(item)
                 }
+                itemView.setOnClickListener {
+                    listener.onItemClick(item)
+                }
             }
     }
 
@@ -54,5 +57,6 @@ class ShoppingListAdapter(private val listener: Listener) :
     interface Listener {
         fun deleteShoppingList(id: Int)
         fun editShoppingList(item: ShoppingList)
+        fun onItemClick(item: ShoppingList)
     }
 }
