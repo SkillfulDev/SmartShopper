@@ -1,5 +1,6 @@
 package ua.chernonog.smartshopper.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ua.chernonog.smartshopper.data.entity.ShoppingList
 import ua.chernonog.smartshopper.databinding.FragmentShoppingListBinding
 import ua.chernonog.smartshopper.ui.activity.MainApp
+import ua.chernonog.smartshopper.ui.activity.ShoppingListActivity
 import ua.chernonog.smartshopper.ui.adapter.ShoppingListAdapter
 import ua.chernonog.smartshopper.ui.dialog.ShoppingItemDeleteDialog
 import ua.chernonog.smartshopper.ui.dialog.ShoppingListDialog
@@ -19,6 +21,8 @@ import ua.chernonog.smartshopper.viewmodel.ShoppingListViewModel
 class ShoppingListFragment : BaseFragment(),
     ShoppingListAdapter.Listener {
     companion object {
+        const val SHOPPING_LIST_ITEM_KEY = "Shopping list"
+
         @JvmStatic
         fun newInstance() = ShoppingListFragment()
     }
@@ -86,6 +90,13 @@ class ShoppingListFragment : BaseFragment(),
                 shoppingListViewModel.deleteShoppingItem(id)
             }
         })
+    }
+
+    override fun onItemClick(item: ShoppingList) {
+        val intent = Intent(activity, ShoppingListActivity::class.java).apply {
+            putExtra(SHOPPING_LIST_ITEM_KEY, item)
+        }
+        startActivity(intent)
     }
 
     private fun setAdapter() = with(binding) {
