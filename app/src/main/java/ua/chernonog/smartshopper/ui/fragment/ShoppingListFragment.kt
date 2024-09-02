@@ -17,7 +17,6 @@ import ua.chernonog.smartshopper.util.DataTimeUtil
 import ua.chernonog.smartshopper.viewmodel.ShoppingListViewModel
 
 class ShoppingListFragment : BaseFragment(),
-    ShoppingListDialog.Listener,
     ShoppingListAdapter.Listener {
     companion object {
         @JvmStatic
@@ -34,19 +33,36 @@ class ShoppingListFragment : BaseFragment(),
     private lateinit var adapter: ShoppingListAdapter
 
     override fun onClickAdd() {
-        ShoppingListDialog.setUpShoppingDialog(requireContext(), this)
-    }
-
-    override fun addShoppingList(name: String) {
-        val shoppingList = ShoppingList(
-            null,
-            name,
-            DataTimeUtil.getCurrentTime(),
-            0,
-            0,
+        ShoppingListDialog.setUpShoppingDialog(
+            requireContext(),
+            object : ShoppingListDialog.Listener {
+                override fun onClick(name: String) {
+                    val shoppingList = ShoppingList(
+                        null,
+                        name,
+                        DataTimeUtil.getCurrentTime(),
+                        0,
+                        0,
+                        ""
+                    )
+                    shoppingListViewModel.addShoppingList(shoppingList)
+                }
+            },
             ""
         )
-        shoppingListViewModel.addShoppingList(shoppingList)
+    }
+
+    override fun editShoppingList(item: ShoppingList) {
+        ShoppingListDialog.setUpShoppingDialog(
+            requireContext(),
+            object : ShoppingListDialog.Listener {
+                override fun onClick(name: String) {
+                    val newShoppingListItem = item.copy(name = name)
+                    shoppingListViewModel.updateShoppingList(newShoppingListItem)
+                }
+            },
+            name = item.name
+        )
     }
 
     override fun onCreateView(
@@ -66,14 +82,10 @@ class ShoppingListFragment : BaseFragment(),
     override fun deleteShoppingList(id: Int) {
         ShoppingItemDeleteDialog.createDeleteShoppingListDialog(requireContext(), object :
             ShoppingItemDeleteDialog.Listener {
-            override fun deleteList() {
+            override fun onClick() {
                 shoppingListViewModel.deleteShoppingItem(id)
             }
         })
-    }
-
-    override fun editShoppingList(item: ShoppingList) {
-        shoppingListViewModel.updateShoppingList(item)
     }
 
     private fun setAdapter() = with(binding) {

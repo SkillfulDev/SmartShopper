@@ -37,5 +37,7 @@
     <string name="warning_message">Delete this shopping list?</string>
     <string name="delete_button">Delete</string>
     <string name="cancel_button">Cancel</string>
+    <string name="rename_shopping_list">Enter a new name</string>
+    <string name="update_button">Update</string>
 
 </resources>
