@@ -13,7 +13,7 @@ object ShoppingItemDeleteDialog {
         alertDialog.setView(binding.root)
         binding.apply {
             btnDelete.setOnClickListener {
-                listener.deleteList()
+                listener.onClick()
                 alertDialog.dismiss()
             }
             btnCancel.setOnClickListener {
@@ -24,6 +24,6 @@ object ShoppingItemDeleteDialog {
     }
 
     interface Listener {
-        fun deleteList()
+        fun onClick()
     }
 }
