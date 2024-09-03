@@ -2,8 +2,10 @@ package ua.chernonog.smartshopper.ui.activity
 
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.ShoppingList
 import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
@@ -24,6 +26,17 @@ class ShoppingListActivity : AppCompatActivity() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        setToolbar()
+    }
+
+    private fun setToolbar() = with (binding){
+        setSupportActionBar(tbShoppingList)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.shopping_list_menu,menu)
+        return true
     }
 
     private fun init() = with(binding) {
