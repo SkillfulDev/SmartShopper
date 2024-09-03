@@ -3,6 +3,7 @@ package ua.chernonog.smartshopper.ui.activity
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
@@ -18,8 +19,9 @@ class ShoppingListActivity : AppCompatActivity() {
                     as MainApp).database
         )
     }
-    private lateinit var binding: ActivityShoppingListBinding
     private var shoppingList: ShoppingList? = null
+    private lateinit var saveMenuItem: MenuItem
+    private lateinit var binding: ActivityShoppingListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +31,33 @@ class ShoppingListActivity : AppCompatActivity() {
         setToolbar()
     }
 
-    private fun setToolbar() = with (binding){
+    private fun setToolbar() = with(binding) {
         setSupportActionBar(tbShoppingList)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.shopping_list_menu,menu)
+        menuInflater.inflate(R.menu.shopping_list_menu, menu)
+        saveMenuItem = menu?.findItem(R.id.saveShoppingItem)!!
+        val addMenuItem = menu.findItem(R.id.addShoppingItem)
+        addMenuItem.setOnActionExpandListener(expandActionView())
+        saveMenuItem.isVisible = false
         return true
+    }
+
+    private fun expandActionView(): MenuItem.OnActionExpandListener {
+        return object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                saveMenuItem.isVisible = true
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                saveMenuItem.isVisible = false
+                invalidateMenu()
+                return true
+            }
+        }
     }
 
     private fun init() = with(binding) {
