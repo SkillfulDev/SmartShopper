@@ -18,7 +18,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/addShoppingItem"
-        android:actionLayout="@layout/shopping_list_edit_text"
+        app:actionLayout="@layout/shopping_list_edit_text"
         android:icon="@drawable/ic_item"
         android:orderInCategory="1"
         android:title="@string/add_shopping_list_item"
