@@ -39,5 +39,11 @@
     <string name="cancel_button">Cancel</string>
     <string name="rename_shopping_list">Enter a new name</string>
     <string name="update_button">Update</string>
+    <!-- Shopping List Menu -->
+    <string name="delete_shopping_list_item">Delete list</string>
+    <string name="share_shopping_list_item">Share list</string>
+    <string name="clear_shopping_list_item">Clear list</string>
+    <string name="save_shopping_list_item">Save list</string>
+    <string name="add_shopping_list_item">Add list</string>
 
 </resources>
