@@ -28,6 +28,7 @@ object ShoppingListDialog {
             }
         }
         dialog.show()
+        dialog.window?.setBackgroundDrawable(null)
     }
 
     private fun ShoppingListDialogBinding.setUpdateContent(

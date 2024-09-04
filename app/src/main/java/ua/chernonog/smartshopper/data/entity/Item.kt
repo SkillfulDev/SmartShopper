@@ -11,7 +11,7 @@ data class Item(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "itemInfo")
-    val itemInfo: String?,
+    val itemInfo: String = "",
     @ColumnInfo(name = "isBought")
     val isBought: Boolean = false,
     @ColumnInfo(name = "shoppingListId")

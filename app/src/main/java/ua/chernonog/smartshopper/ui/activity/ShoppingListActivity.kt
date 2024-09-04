@@ -14,6 +14,7 @@ import ua.chernonog.smartshopper.data.entity.Item
 import ua.chernonog.smartshopper.data.entity.ShoppingList
 import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
 import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
+import ua.chernonog.smartshopper.ui.dialog.ShoppingItemDialog
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
 import ua.chernonog.smartshopper.viewmodel.ShoppingItemViewModel
 
@@ -40,7 +41,6 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         observeItemData()
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
         saveMenuItem = menu?.findItem(R.id.saveShoppingItem)!!
@@ -54,11 +54,20 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.saveShoppingItem -> createShoppingItem()
+            android.R.id.home -> finish()
         }
         return true
     }
 
-    override fun onClick(item: Item) {
+    override fun editItem(item: Item) {
+        ShoppingItemDialog.createDialog(this, item, object : ShoppingItemDialog.Listener {
+            override fun onUpdateClick(item: Item) {
+                shoppingItemViewModel.updateShoppingItem(item)
+            }
+        })
+    }
+
+    override fun setCheckItem(item: Item) {
         shoppingItemViewModel.updateShoppingItem(item)
     }
 
@@ -102,7 +111,7 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         val newItem = Item(
             null,
             edItem?.text.toString(),
-            null,
+            "",
             false,
             shoppingList?.id!!,
             0
