@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.Item
-import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
+import ua.chernonog.smartshopper.databinding.ShoppingItemBinding
 
 class ShoppingItemAdapter : ListAdapter<
         Item,
@@ -47,11 +47,12 @@ class ShoppingItemAdapter : ListAdapter<
         return getItem(position).itemType
     }
 
-    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding = ActivityShoppingListBinding.bind(view)
-
+    class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun setItemData(item: Item) {
-
+            val binding = ShoppingItemBinding.bind(view)
+            binding.apply {
+                tvItemName.text = item.name
+            }
         }
 
         fun setLibraryItemData(item: Item) {
