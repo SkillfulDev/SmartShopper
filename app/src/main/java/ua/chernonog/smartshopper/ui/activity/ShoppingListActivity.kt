@@ -17,7 +17,7 @@ import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
 import ua.chernonog.smartshopper.viewmodel.ShoppingItemViewModel
 
-class ShoppingListActivity : AppCompatActivity() {
+class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     private val shoppingItemViewModel: ShoppingItemViewModel by viewModels {
         ShoppingItemViewModel.ShoppingItemViewModelFactory(
             (applicationContext
@@ -58,23 +58,26 @@ class ShoppingListActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onClick(item: Item) {
+        shoppingItemViewModel.updateShoppingItem(item)
+    }
+
     private fun rvInit() = with(binding) {
         rvItem.layoutManager = LinearLayoutManager(this@ShoppingListActivity)
-        adapter = ShoppingItemAdapter()
+        adapter = ShoppingItemAdapter(this@ShoppingListActivity)
         rvItem.adapter = adapter
     }
 
     private fun observeItemData() {
-        shoppingItemViewModel.getAllItems(shoppingList?.id!!)
-            .observe(this) {
-                if (it.isEmpty()) {
-                    binding.tvEmptyList.isVisible = true
-                    adapter.submitList(it)
-                } else {
-                    binding.tvEmptyList.isVisible = false
-                    adapter.submitList(it)
-                }
+        shoppingItemViewModel.getAllItems(shoppingList?.id!!).observe(this) {
+            if (it.isEmpty()) {
+                binding.tvEmptyList.isVisible = true
+                adapter.submitList(it)
+            } else {
+                binding.tvEmptyList.isVisible = false
+                adapter.submitList(it)
             }
+        }
     }
 
     private fun expandActionView(): MenuItem.OnActionExpandListener {
