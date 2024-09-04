@@ -1,7 +1,9 @@
 package ua.chernonog.smartshopper.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ua.chernonog.smartshopper.data.db.MainDatabase
@@ -12,6 +14,10 @@ class ShoppingItemViewModel(database: MainDatabase) : ViewModel() {
 
     fun addShoppingItem(item: Item) = viewModelScope.launch {
         shoppingItemDao.addShoppingItem(item)
+    }
+
+    fun getAllItems(shoppingListId: Int): LiveData<List<Item>> {
+        return shoppingItemDao.getAllItems(shoppingListId).asLiveData()
     }
 
     class ShoppingItemViewModelFactory(private val database: MainDatabase) :

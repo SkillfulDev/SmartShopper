@@ -7,10 +7,13 @@ import android.view.MenuItem
 import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.Item
 import ua.chernonog.smartshopper.data.entity.ShoppingList
 import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
+import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
 import ua.chernonog.smartshopper.viewmodel.ShoppingItemViewModel
 
@@ -25,6 +28,7 @@ class ShoppingListActivity : AppCompatActivity() {
     private var edItem: EditText? = null
     private lateinit var saveMenuItem: MenuItem
     private lateinit var binding: ActivityShoppingListBinding
+    private lateinit var adapter: ShoppingItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +36,10 @@ class ShoppingListActivity : AppCompatActivity() {
         setContentView(binding.root)
         init()
         setToolbar()
+        rvInit()
+        observeItemData()
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.shopping_list_menu, menu)
@@ -49,6 +56,25 @@ class ShoppingListActivity : AppCompatActivity() {
             R.id.saveShoppingItem -> createShoppingItem()
         }
         return true
+    }
+
+    private fun rvInit() = with(binding) {
+        rvItem.layoutManager = LinearLayoutManager(this@ShoppingListActivity)
+        adapter = ShoppingItemAdapter()
+        rvItem.adapter = adapter
+    }
+
+    private fun observeItemData() {
+        shoppingItemViewModel.getAllItems(shoppingList?.id!!)
+            .observe(this) {
+                if (it.isEmpty()) {
+                    binding.tvEmptyList.isVisible = true
+                    adapter.submitList(it)
+                } else {
+                    binding.tvEmptyList.isVisible = false
+                    adapter.submitList(it)
+                }
+            }
     }
 
     private fun expandActionView(): MenuItem.OnActionExpandListener {
@@ -79,6 +105,7 @@ class ShoppingListActivity : AppCompatActivity() {
             0
         )
         shoppingItemViewModel.addShoppingItem(newItem)
+        edItem?.setText("")
     }
 
     private fun init() = with(binding) {
@@ -93,7 +120,6 @@ class ShoppingListActivity : AppCompatActivity() {
                 ShoppingListFragment.SHOPPING_LIST_ITEM_KEY
             ) as ShoppingList
         }
-        tvTest.text = shoppingList?.name
     }
 
     private fun setToolbar() = with(binding) {
