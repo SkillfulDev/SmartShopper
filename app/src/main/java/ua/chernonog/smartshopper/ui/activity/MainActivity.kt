@@ -2,6 +2,7 @@ package ua.chernonog.smartshopper.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityMainBinding
@@ -29,6 +30,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(noteToolBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.bnvMain.selectedItemId = R.id.notes
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return true
     }
 
     private fun onBottomNavigationListener() {

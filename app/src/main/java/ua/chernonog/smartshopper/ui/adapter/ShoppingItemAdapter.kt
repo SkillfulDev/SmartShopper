@@ -55,12 +55,15 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
             val binding = ShoppingItemBinding.bind(view)
             binding.apply {
                 tvItemName.text = item.name
-                tvItemInfo.text = item.itemInfo
                 tvItemInfo.isVisible = isItemInfoVisible(item.itemInfo)
+                tvItemInfo.text = item.itemInfo
                 checkBox.isChecked = item.isBought
                 setPaintFlagAndColor(binding)
                 checkBox.setOnClickListener {
-                    listener.onClick(item.copy(isBought = checkBox.isChecked))
+                    listener.setCheckItem(item.copy(isBought = checkBox.isChecked))
+                }
+                ibEditItem.setOnClickListener {
+                    listener.editItem(item)
                 }
             }
         }
@@ -98,15 +101,15 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
                     tvItemInfo.setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
-                            R.color.black
+                            R.color.grey
                         )
                     )
                 }
             }
         }
 
-        private fun isItemInfoVisible(content: String?): Boolean {
-            return content.isNullOrBlank()
+        private fun isItemInfoVisible(content: String): Boolean {
+            return content.isNotBlank()
         }
     }
 
@@ -121,6 +124,7 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
     }
 
     interface Listener {
-        fun onClick(item: Item)
+        fun setCheckItem(item: Item)
+        fun editItem(item: Item)
     }
 }
