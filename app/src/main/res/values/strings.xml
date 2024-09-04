@@ -45,5 +45,9 @@
     <string name="clear_shopping_list_item">Clear list</string>
     <string name="save_shopping_list_item">Save list</string>
     <string name="add_shopping_list_item">Add list</string>
+    <!-- Shopping Item -->
+    <string name="edit_item">Edit</string>
+    <string name="edit_library_item">Edit</string>
+    <string name="delete_library_item">Delete</string>
 
 </resources>
