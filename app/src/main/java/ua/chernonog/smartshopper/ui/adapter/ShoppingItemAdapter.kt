@@ -1,8 +1,11 @@
 package ua.chernonog.smartshopper.ui.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +13,7 @@ import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.Item
 import ua.chernonog.smartshopper.databinding.ShoppingItemBinding
 
-class ShoppingItemAdapter : ListAdapter<
+class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
         Item,
         ShoppingItemAdapter.ItemViewHolder>(
     ShoppingItemDiffCallBack()
@@ -37,7 +40,7 @@ class ShoppingItemAdapter : ListAdapter<
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         if (getItem(position).itemType == 0) {
-            holder.setItemData(getItem(position))
+            holder.setItemData(getItem(position), listener)
         } else {
             holder.setLibraryItemData(getItem(position))
         }
@@ -48,15 +51,62 @@ class ShoppingItemAdapter : ListAdapter<
     }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun setItemData(item: Item) {
+        fun setItemData(item: Item, listener: Listener) {
             val binding = ShoppingItemBinding.bind(view)
             binding.apply {
                 tvItemName.text = item.name
+                tvItemInfo.text = item.itemInfo
+                tvItemInfo.isVisible = isItemInfoVisible(item.itemInfo)
+                checkBox.isChecked = item.isBought
+                setPaintFlagAndColor(binding)
+                checkBox.setOnClickListener {
+                    listener.onClick(item.copy(isBought = checkBox.isChecked))
+                }
             }
         }
 
         fun setLibraryItemData(item: Item) {
 
+        }
+
+        private fun setPaintFlagAndColor(binding: ShoppingItemBinding) {
+            binding.apply {
+                if (checkBox.isChecked) {
+                    tvItemName.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    tvItemName.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.picker_green
+                        )
+                    )
+                    tvItemInfo.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                    tvItemInfo.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.picker_green
+                        )
+                    )
+                } else {
+                    tvItemName.paintFlags = Paint.ANTI_ALIAS_FLAG
+                    tvItemName.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.black
+                        )
+                    )
+                    tvItemInfo.paintFlags = Paint.ANTI_ALIAS_FLAG
+                    tvItemInfo.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.black
+                        )
+                    )
+                }
+            }
+        }
+
+        private fun isItemInfoVisible(content: String?): Boolean {
+            return content.isNullOrBlank()
         }
     }
 
@@ -68,5 +118,9 @@ class ShoppingItemAdapter : ListAdapter<
         override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface Listener {
+        fun onClick(item: Item)
     }
 }

@@ -20,6 +20,10 @@ class ShoppingItemViewModel(database: MainDatabase) : ViewModel() {
         return shoppingItemDao.getAllItems(shoppingListId).asLiveData()
     }
 
+    fun updateShoppingItem(item: Item) = viewModelScope.launch {
+        shoppingItemDao.updateShoppingItem(item)
+    }
+
     class ShoppingItemViewModelFactory(private val database: MainDatabase) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
