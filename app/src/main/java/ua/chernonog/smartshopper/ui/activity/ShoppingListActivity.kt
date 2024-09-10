@@ -1,5 +1,6 @@
 package ua.chernonog.smartshopper.ui.activity
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -16,6 +17,7 @@ import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
 import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
 import ua.chernonog.smartshopper.ui.dialog.ShoppingItemDialog
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
+import ua.chernonog.smartshopper.util.ShareHelper
 import ua.chernonog.smartshopper.viewmodel.ShoppingItemViewModel
 import ua.chernonog.smartshopper.viewmodel.ShoppingListViewModel
 
@@ -63,7 +65,17 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
             R.id.saveShoppingItem -> createShoppingItem()
             android.R.id.home -> finish()
             R.id.clearShoppingItem -> shoppingItemViewModel.clearItemsFromList(shoppingList?.id!!)
-            R.id.deleteShoppingItem -> shoppingListViewModel.deleteShoppingItem(shoppingList?.id!!)
+            R.id.deleteShoppingItem -> {
+                shoppingListViewModel.deleteShoppingItem(shoppingList?.id!!)
+                finish()
+            }
+
+            R.id.shareShoppingItem -> startActivity(
+                Intent.createChooser(
+                    ShareHelper.shareList(adapter.currentList, shoppingList?.name!!),
+                    "Share by"
+                )
+            )
         }
         return true
     }
