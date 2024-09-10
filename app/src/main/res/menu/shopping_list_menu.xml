@@ -15,12 +15,12 @@
         android:icon="@drawable/ic_save"
         android:orderInCategory="2"
         android:title="@string/save_shopping_list_item"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/addShoppingItem"
         app:actionLayout="@layout/shopping_list_edit_text"
         android:icon="@drawable/ic_item"
         android:orderInCategory="1"
         android:title="@string/add_shopping_list_item"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always|collapseActionView" />
 </menu>

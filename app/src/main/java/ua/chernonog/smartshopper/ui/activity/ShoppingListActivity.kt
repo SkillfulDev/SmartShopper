@@ -17,10 +17,17 @@ import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
 import ua.chernonog.smartshopper.ui.dialog.ShoppingItemDialog
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
 import ua.chernonog.smartshopper.viewmodel.ShoppingItemViewModel
+import ua.chernonog.smartshopper.viewmodel.ShoppingListViewModel
 
 class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     private val shoppingItemViewModel: ShoppingItemViewModel by viewModels {
         ShoppingItemViewModel.ShoppingItemViewModelFactory(
+            (applicationContext
+                    as MainApp).database
+        )
+    }
+    private val shoppingListViewModel: ShoppingListViewModel by viewModels {
+        ShoppingListViewModel.ShoppingListViewModelFactory(
             (applicationContext
                     as MainApp).database
         )
@@ -55,6 +62,8 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         when (item.itemId) {
             R.id.saveShoppingItem -> createShoppingItem()
             android.R.id.home -> finish()
+            R.id.clearShoppingItem -> shoppingItemViewModel.clearItemsFromList(shoppingList?.id!!)
+            R.id.deleteShoppingItem -> shoppingListViewModel.deleteShoppingItem(shoppingList?.id!!)
         }
         return true
     }

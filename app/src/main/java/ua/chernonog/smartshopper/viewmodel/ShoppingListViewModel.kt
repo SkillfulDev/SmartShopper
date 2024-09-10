@@ -11,6 +11,7 @@ import ua.chernonog.smartshopper.data.entity.ShoppingList
 
 class ShoppingListViewModel(database: MainDatabase) : ViewModel() {
     private val shoppingListDao = database.getShoppingListDao()
+    private val shoppingItemDao = database.getShoppingItemDao()
 
     fun getAllShoppingList(): LiveData<List<ShoppingList>> {
         return shoppingListDao.getAllShoppingList().asLiveData()
@@ -24,6 +25,7 @@ class ShoppingListViewModel(database: MainDatabase) : ViewModel() {
 
     fun deleteShoppingItem(id: Int) = viewModelScope.launch {
         shoppingListDao.deleteShoppingListItem(id)
+        shoppingItemDao.deleteItemsByShoppingListId(id)
     }
 
     fun updateShoppingList(item: ShoppingList) = viewModelScope.launch {

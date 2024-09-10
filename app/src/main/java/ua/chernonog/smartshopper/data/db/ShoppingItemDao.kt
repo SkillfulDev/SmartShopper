@@ -17,4 +17,7 @@ interface ShoppingItemDao {
 
     @Update
     suspend fun updateShoppingItem(item: Item)
+
+    @Query("DELETE FROM items WHERE shoppingListId= :shoppingListId")
+    suspend fun deleteItemsByShoppingListId(shoppingListId: Int)
 }
