@@ -24,6 +24,10 @@ class ShoppingItemViewModel(database: MainDatabase) : ViewModel() {
         shoppingItemDao.updateShoppingItem(item)
     }
 
+    fun clearItemsFromList(shoppingListId: Int) = viewModelScope.launch {
+        shoppingItemDao.deleteItemsByShoppingListId(shoppingListId)
+    }
+
     class ShoppingItemViewModelFactory(private val database: MainDatabase) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
