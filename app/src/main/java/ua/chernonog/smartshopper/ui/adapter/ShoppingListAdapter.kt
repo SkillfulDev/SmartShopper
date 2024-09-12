@@ -1,8 +1,11 @@
 package ua.chernonog.smartshopper.ui.adapter
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +35,16 @@ class ShoppingListAdapter(private val listener: Listener) :
             with(binding) {
                 tvName.text = item.name
                 tvTime.text = item.time
+                val colorState = ColorStateList.valueOf(
+                    getColorForProgress(
+                        item, binding.root.context
+                    )
+                )
+                progressBar.max = item.totalItems
+                progressBar.progress = item.boughtItems
+                progressBar.progressTintList = colorState
+                val counterText = "${item.boughtItems}/${item.totalItems}"
+                tvPurchased.text = counterText
                 ibDeleteShoppingList.setOnClickListener {
                     listener.deleteShoppingList(item.id!!)
                 }
@@ -42,7 +55,16 @@ class ShoppingListAdapter(private val listener: Listener) :
                     listener.onItemClick(item)
                 }
             }
+
+        private fun getColorForProgress(shoppingList: ShoppingList, context: Context): Int {
+            return if (shoppingList.totalItems == shoppingList.boughtItems) {
+                ContextCompat.getColor(context, R.color.picker_green)
+            } else {
+                ContextCompat.getColor(context, R.color.picker_red)
+            }
+        }
     }
+
 
     class ShoppingListDiffCallBack : DiffUtil.ItemCallback<ShoppingList>() {
         override fun areItemsTheSame(oldItem: ShoppingList, newItem: ShoppingList): Boolean {
