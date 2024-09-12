@@ -79,6 +79,9 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
                 ibDeleteLibraryItem.setOnClickListener {
                     listener.deleteLibraryItem(item.id!!)
                 }
+                itemView.setOnClickListener {
+                    listener.addLibraryItemToList(item.name)
+                }
             }
         }
 
@@ -138,5 +141,6 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
         fun editItem(item: Item)
         fun updateLibraryItem(item: Item)
         fun deleteLibraryItem(id: Int)
+        fun addLibraryItemToList(name: String)
     }
 }

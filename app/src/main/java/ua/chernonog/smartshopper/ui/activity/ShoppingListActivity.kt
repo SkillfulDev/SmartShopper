@@ -67,7 +67,7 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.saveShoppingItem -> createShoppingItem()
+            R.id.saveShoppingItem -> createShoppingItem(edItem?.text.toString())
             android.R.id.home -> finish()
             R.id.clearShoppingItem -> shoppingItemViewModel.clearItemsFromList(shoppingList?.id!!)
             R.id.deleteShoppingItem -> {
@@ -108,6 +108,10 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     override fun deleteLibraryItem(id: Int) {
         shoppingItemViewModel.deleteLibraryItem(id)
         updateLibraryItemInfo()
+    }
+
+    override fun addLibraryItemToList(name: String) {
+        createShoppingItem(name)
     }
 
     private fun updateLibraryItemInfo() {
@@ -170,13 +174,13 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         }
     }
 
-    private fun createShoppingItem() {
-        if (edItem?.text.toString().isEmpty()) {
+    private fun createShoppingItem(name: String) {
+        if (name.isEmpty()) {
             return
         }
         val newItem = Item(
             null,
-            edItem?.text.toString(),
+            name,
             "",
             false,
             shoppingList?.id!!,
