@@ -53,5 +53,14 @@
     <string name="item_name_hint">Name</string>
     <string name="item_info_hint">Info</string>
     <string name="item_update_button">Save changes</string>
+    <!-- Settings-->
+    <string name="general_settings">General Settings</string>
+    <string name="style_note">Note style</string>
+    <string name="time_format">Time format</string>
+    <string name="ads">Remove ads</string>
+    <string name="ads_summary">Remove all ads from this app</string>
+    <string name="text_size">Title text size</string>
+    <string name="text_size_content">Content text size</string>
+    <string name="text_settings">Text Settings</string>
 
 </resources>
