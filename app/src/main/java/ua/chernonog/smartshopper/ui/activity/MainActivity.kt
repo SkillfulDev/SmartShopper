@@ -1,11 +1,12 @@
 package ua.chernonog.smartshopper.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.databinding.ActivityMainBinding
+import ua.chernonog.smartshopper.settings.SettingsActivity
 import ua.chernonog.smartshopper.ui.fragment.FragmentManager
 import ua.chernonog.smartshopper.ui.fragment.NoteItemFragment
 import ua.chernonog.smartshopper.ui.fragment.ShoppingListFragment
@@ -42,8 +43,18 @@ class MainActivity : AppCompatActivity() {
     private fun onBottomNavigationListener() {
         binding.bnvMain.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.settings -> Log.d("MyLog", "Settings")
-                R.id.notes -> FragmentManager.setFragment(NoteItemFragment.newInstance(), this)
+                R.id.settings -> startActivity(
+                    Intent(
+                        this,
+                        SettingsActivity::class.java
+                    )
+                )
+
+                R.id.notes -> FragmentManager.setFragment(
+                    NoteItemFragment.newInstance(),
+                    this
+                )
+
                 R.id.shopList -> FragmentManager.setFragment(
                     ShoppingListFragment.newInstance(),
                     this
