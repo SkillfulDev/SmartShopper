@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -52,6 +53,15 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         setToolbar()
         rvInit()
         observeItemData()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setBuyingCounter()
+                if (isEnabled) {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,7 +78,11 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.saveShoppingItem -> createShoppingItem(edItem?.text.toString())
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                setBuyingCounter()
+                finish()
+            }
+
             R.id.clearShoppingItem -> shoppingItemViewModel.clearItemsFromList(shoppingList?.id!!)
             R.id.deleteShoppingItem -> {
                 shoppingListViewModel.deleteShoppingItem(shoppingList?.id!!)
@@ -112,6 +126,19 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
 
     override fun addLibraryItemToList(name: String) {
         createShoppingItem(name)
+    }
+
+    private fun setBuyingCounter() {
+        val totalItems = adapter.currentList.size
+        var checkedItem = 0
+
+        adapter.currentList.forEach {
+            if (it.isBought) {
+                checkedItem++
+            }
+        }
+        val updatedListItem = shoppingList?.copy(totalItems = totalItems, boughtItems = checkedItem)
+        shoppingListViewModel.updateShoppingList(updatedListItem!!)
     }
 
     private fun updateLibraryItemInfo() {
