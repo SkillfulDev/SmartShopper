@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.Item
 import ua.chernonog.smartshopper.databinding.ShoppingItemBinding
+import ua.chernonog.smartshopper.databinding.ShoppingLibraryItemBinding
 
 class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
         Item,
@@ -42,7 +43,7 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
         if (getItem(position).itemType == 0) {
             holder.setItemData(getItem(position), listener)
         } else {
-            holder.setLibraryItemData(getItem(position))
+            holder.setLibraryItemData(getItem(position), listener)
         }
     }
 
@@ -68,8 +69,17 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
             }
         }
 
-        fun setLibraryItemData(item: Item) {
-
+        fun setLibraryItemData(item: Item, listener: Listener) {
+            val binding = ShoppingLibraryItemBinding.bind(view)
+            binding.apply {
+                tvItemName.text = item.name
+                ibEditItem.setOnClickListener {
+                    listener.updateLibraryItem(item)
+                }
+                ibDeleteLibraryItem.setOnClickListener {
+                    listener.deleteLibraryItem(item.id!!)
+                }
+            }
         }
 
         private fun setPaintFlagAndColor(binding: ShoppingItemBinding) {
@@ -126,5 +136,7 @@ class ShoppingItemAdapter(private val listener: Listener) : ListAdapter<
     interface Listener {
         fun setCheckItem(item: Item)
         fun editItem(item: Item)
+        fun updateLibraryItem(item: Item)
+        fun deleteLibraryItem(id: Int)
     }
 }
