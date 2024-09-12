@@ -22,6 +22,7 @@ abstract class MainDatabase : RoomDatabase() {
     abstract fun getNoteItemDao(): NoteItemDao
     abstract fun getShoppingListDao(): ShoppingListDao
     abstract fun getShoppingItemDao(): ShoppingItemDao
+    abstract fun getLibraryItemDao(): LibraryItemDao
 
     companion object {
         @Volatile

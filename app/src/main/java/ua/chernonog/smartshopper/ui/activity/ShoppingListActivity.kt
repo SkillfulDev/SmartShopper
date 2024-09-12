@@ -3,6 +3,8 @@ package ua.chernonog.smartshopper.ui.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -12,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.Item
+import ua.chernonog.smartshopper.data.entity.LibraryItem
 import ua.chernonog.smartshopper.data.entity.ShoppingList
 import ua.chernonog.smartshopper.databinding.ActivityShoppingListBinding
 import ua.chernonog.smartshopper.ui.adapter.ShoppingItemAdapter
@@ -39,6 +42,7 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     private lateinit var saveMenuItem: MenuItem
     private lateinit var binding: ActivityShoppingListBinding
     private lateinit var adapter: ShoppingItemAdapter
+    private lateinit var textWatcher: TextWatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +61,7 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         edItem = addMenuItem.actionView?.findViewById(R.id.edItem)!!
         addMenuItem.setOnActionExpandListener(expandActionView())
         saveMenuItem.isVisible = false
+        textWatcher = textWatcherInit()
         return true
     }
 
@@ -83,6 +88,10 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     override fun editItem(item: Item) {
         ShoppingItemDialog.createDialog(this, item, object : ShoppingItemDialog.Listener {
             override fun onUpdateClick(item: Item) {
+                if (item.itemType == 1) {
+                    shoppingItemViewModel.updateLibraryItem(LibraryItem(item.id, item.name))
+                    updateLibraryItemInfo()
+                }
                 shoppingItemViewModel.updateShoppingItem(item)
             }
         })
@@ -90,6 +99,19 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
 
     override fun setCheckItem(item: Item) {
         shoppingItemViewModel.updateShoppingItem(item)
+    }
+
+    override fun updateLibraryItem(item: Item) {
+        editItem(item)
+    }
+
+    override fun deleteLibraryItem(id: Int) {
+        shoppingItemViewModel.deleteLibraryItem(id)
+        updateLibraryItemInfo()
+    }
+
+    private fun updateLibraryItemInfo() {
+        shoppingItemViewModel.getAllLibraryItem("%${edItem?.text.toString()}%")
     }
 
     private fun rvInit() = with(binding) {
@@ -100,13 +122,27 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
 
     private fun observeItemData() {
         shoppingItemViewModel.getAllItems(shoppingList?.id!!).observe(this) {
-            if (it.isEmpty()) {
-                binding.tvEmptyList.isVisible = true
-                adapter.submitList(it)
-            } else {
-                binding.tvEmptyList.isVisible = false
-                adapter.submitList(it)
+            adapter.submitList(it)
+            binding.tvEmptyList.isVisible = it.isEmpty()
+        }
+    }
+
+    private fun observeLibraryItem() {
+        shoppingItemViewModel.libraryItems.observe(this) {
+            binding.tvEmptyList.isVisible = it.isEmpty()
+            val tempShoppingItem = ArrayList<Item>()
+            it.forEach { item ->
+                val convertItem = Item(
+                    item.id,
+                    item.name,
+                    "",
+                    false,
+                    0,
+                    1
+                )
+                tempShoppingItem.add(convertItem)
             }
+            adapter.submitList(tempShoppingItem)
         }
     }
 
@@ -114,12 +150,21 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
         return object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem): Boolean {
                 saveMenuItem.isVisible = true
+                edItem?.addTextChangedListener(textWatcher)
+                observeLibraryItem()
+                shoppingItemViewModel.getAllItems(shoppingList?.id!!).removeObservers(
+                    this@ShoppingListActivity
+                )
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                 saveMenuItem.isVisible = false
+                edItem?.removeTextChangedListener(textWatcher)
                 invalidateMenu()
+                shoppingItemViewModel.libraryItems.removeObservers(this@ShoppingListActivity)
+                observeItemData()
+                edItem?.setText("")
                 return true
             }
         }
@@ -137,8 +182,9 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
             shoppingList?.id!!,
             0
         )
-        shoppingItemViewModel.addShoppingItem(newItem)
         edItem?.setText("")
+        shoppingItemViewModel.addShoppingItem(newItem)
+
     }
 
     private fun init() = with(binding) {
@@ -158,5 +204,21 @@ class ShoppingListActivity : AppCompatActivity(), ShoppingItemAdapter.Listener {
     private fun setToolbar() = with(binding) {
         setSupportActionBar(tbShoppingList)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun textWatcherInit(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                shoppingItemViewModel.getAllLibraryItem("%$s%")
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        }
     }
 }

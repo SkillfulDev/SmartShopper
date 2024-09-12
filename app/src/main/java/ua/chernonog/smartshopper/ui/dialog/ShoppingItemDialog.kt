@@ -3,6 +3,7 @@ package ua.chernonog.smartshopper.ui.dialog
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import ua.chernonog.smartshopper.data.entity.Item
 import ua.chernonog.smartshopper.databinding.ShoppingItemDialogBinding
 
@@ -18,6 +19,9 @@ object ShoppingItemDialog {
         binding.apply {
             edItemName.setText(item.name)
             edItemInfo.setText(item.itemInfo)
+            if (item.itemType == 1) {
+                edItemInfo.isVisible = false
+            }
             btnSaveChanges.setOnClickListener {
                 listener.onUpdateClick(
                     item.copy(
