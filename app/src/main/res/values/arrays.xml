@@ -14,7 +14,7 @@
     </string-array>
     <string-array name="time_format_values">
         <item>hh:mm - yyyy/MM/dd</item>
-        <item>hh:mm:ss - dd/MM/yyyy</item>
+        <item>hh:mm - dd/MM/yyyy</item>
     </string-array>
     <string-array name="text_size_array">
         <item>12 sp</item>

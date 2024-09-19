@@ -3,6 +3,7 @@ package ua.chernonog.smartshopper.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +15,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import ua.chernonog.smartshopper.R
 import ua.chernonog.smartshopper.data.entity.NoteItem
 import ua.chernonog.smartshopper.databinding.ActivityNoteBinding
@@ -26,6 +29,7 @@ import ua.chernonog.smartshopper.util.ui.utils.ColorPickerTouchListener
 
 class NoteActivity : AppCompatActivity() {
     private var noteItem: NoteItem? = null
+    private var preference: SharedPreferences? = null
     private lateinit var binding: ActivityNoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +39,7 @@ class NoteActivity : AppCompatActivity() {
         setContentView(binding.root)
         settingToolBar()
         setUpColorPickerTouchListener()
+        setTextSize()
         onClickColorPicker()
     }
 
@@ -70,6 +75,7 @@ class NoteActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setUpColorPickerTouchListener() {
         binding.clColorPicker.setOnTouchListener(ColorPickerTouchListener())
+        preference = PreferenceManager.getDefaultSharedPreferences(this)
     }
 
     private fun openColorPicker() {
@@ -203,5 +209,17 @@ class NoteActivity : AppCompatActivity() {
             DataTimeUtil.getCurrentTime(),
             ""
         )
+    }
+
+    private fun setTextSize() = with(binding) {
+        edTitle.setTextSize(preference?.getString("title_text_key", "16"))
+        edContent.setTextSize(preference?.getString("content_text_key", "16"))
+
+    }
+
+    private fun EditText.setTextSize(size: String?) {
+        if (size != null) {
+            this.textSize = size.toFloat()
+        }
     }
 }
